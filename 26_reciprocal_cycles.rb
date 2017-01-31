@@ -48,4 +48,3 @@ def repeat?(arr)
 end
 
 p reciprocal_cycles
-# p cycle(7)
