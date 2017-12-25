@@ -1,45 +1,33 @@
-def first_10000_pentagons
-  pentagons = []
-  (1..100_000).each do |num|
-    pentagons << ((num * ((3 * num) - 1)) / 2) # pentagon formula
-  end
-  pentagons
+def make_pentagon(n)
+  (n * ((3 * n) - 1)) / 2
 end
 
+def first_10000_pentagon_numbers
+  (1..10000).map do |num|
+    make_pentagon(num)
+  end
+end
 
-def pentagon_pairs_with_pentagonal_differences_and_sums
-  pentagons = first_10000_pentagons
-  # p pentagons
-  pairs = []
-  # i = 0
-  j = 1
-  # while i < 10000 # only checking first 10000
-  #   j = i + 1
-  #   while j < 10000
-  #     difference = pentagons[j] - pentagons[i]
-  #     sum = pentagons[j] + pentagons[i]
-  #     if pentagons.include?(difference) && pentagons.include?(sum)
-  #       pairs << [pentagons[i], pentagons[j]]
-  #     end
-  #     j += 1
-  #   end
-  #   p i
-  #   i += 1
-  # end
-  while j < 20
-    i = 0
-    while i < 10_000
-      difference = pentagons[i+j] - pentagons[i]
-      sum = pentagons[i+j] + pentagons[i]
-      if pentagons.include?(difference) && pentagons.include?(sum)
-        pairs << [pentagons[i], pentagons[j]]
+def is_pentagonal?(x)
+  # x = n(3n−1)/2
+  # x = (3n^2 - n) / 2
+  # x = 1.5n^2 - 0.5n
+  # 1.5n^2 - 0.5n - x = 0
+  n = (0.5 + Math.sqrt(0.25 - (4 * 1.5 * (x * -1)))) / (2 * 1.5)
+  n % 1 == 0
+end
+
+def find_pair
+  first_10000 = first_10000_pentagon_numbers()
+  differences = []
+  first_10000.each_with_index do |x, x_idx|
+    first_10000.each_with_index do |y, y_idx|
+      if y_idx > x_idx && is_pentagonal?(y - x) && is_pentagonal?(y + x)
+        differences << (y - x)
       end
-      i += 1
     end
-    p j
-    j += 1
   end
-  pairs
+  differences.sort( ).first
 end
 
-p pentagon_pairs_with_pentagonal_differences_and_sums
+p find_pair()
