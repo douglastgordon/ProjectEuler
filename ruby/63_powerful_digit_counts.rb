@@ -1,21 +1,14 @@
-def digit_count(num)
-  num.to_s.length
-end
-
 def powerful_digit_counts
-  count = 0
-  (1..10000).each do |n|
-    power = 1
-    until digit_count(n ** power) > n
-      if digit_count(n ** power) == n
-        count += 1
-        break
+  total = 0
+  (1..1000).each do |digit|
+    (1..40).each do |power|
+      if ((digit ** power).to_s.length == power)
+        total += 1
+        pairs << [digit, power]
       end
-      power += 1
     end
   end
-  count
+  total
 end
-
 
 p powerful_digit_counts
